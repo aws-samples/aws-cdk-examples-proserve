@@ -19,6 +19,12 @@ languages, please refer to the AWS CDK FAQ mentioned below.)
 
 The recommended starting point is the `hello-world` example.
 
+## Additional Examples are Coming
+
+This repository currently contains a limited set of examples. However, over the next few months,
+additional examples will be included. Please consider checking back in from time to time to see
+how things evolve.
+
 ## Additional Resources
 
  - [Getting started with the AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) -
