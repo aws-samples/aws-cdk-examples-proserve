@@ -1,0 +1,25 @@
+{
+  "name": "api-swagger-lambda",
+  "version": "1.0.0",
+  "description": "Running an API Gateway with Swagger OpenAPI spec file.",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "author": {
+    "name": "Jonathan Osterman <josterm@amazon.com>"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "aws-cdk": "*",
+    "@types/aws-lambda": "^8.10.71",
+    "@types/node": "*",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.0.0",
+    "constructs": "^10.0.0"
+  }
+}
