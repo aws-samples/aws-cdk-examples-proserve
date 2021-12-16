@@ -11,7 +11,7 @@
 ---
 <!--END STABILITY BANNER-->
 
-This an example of an APIGateway with an Swagger OpenAPI Specification file and an example Lambda function.
+An API Gateway/Lambda Rest API is created in a stack using an OpenAPI definition file to define the API methods. This will include API Gateway request validators and Integration within the definition file. It will eliminate the need to define the API methods in the stack file. Example code is available in Typescript. This solution provides sample code to the user that sets up a basic Lambda function, defines the OpenAPI definition file as an Asset API Definition an adds this definition to an API Gateway Instance.
 
 ## Build
 
@@ -35,7 +35,7 @@ After the deployment you will see the API's URL, which represents the url you ca
 
 The whole component contains:
 
-- An API Gateway with method specified in the `swagger/swagger/yaml` file.
+- An API Gateway with method specified in the `swagger/swagger.yaml` file.
 - A Lambda function in `lambda/index.ts` which return an example item.
 - Integrations and validation happen in the Swagger file.
 
