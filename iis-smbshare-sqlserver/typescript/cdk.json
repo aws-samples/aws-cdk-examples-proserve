@@ -13,6 +13,25 @@
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
     "@aws-cdk/aws-efs:defaultEncryptionAtRest": true,
     "@aws-cdk/aws-lambda:recognizeVersionProps": true,
-    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true
+    "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
+    "parameters": {
+      "prefix": "dev",
+      "existingVpcId": "",
+      "keyName": "example",
+      "domainName": "example.corp.com",
+      "domainUserName" : "web-user",
+      "dbAdminUserName": "admin",
+      "dbAdminPasswordSecretName": "db-admin-secret",
+      "dbPort" : 1433,
+      "s3CertificateBucketname": "",
+      "certificateArn": "",
+      "certificatePassword": "",
+      "iisAppPoolName" : "",
+      "iisbindingHostName": "",
+      "webSitePort": 90,
+      "sslCertHostname": "example.com",
+      "cloudWatchAgentConfigPath": "lib/cloudwatch_agent_config.json",
+      "s3BuildOutputMsiUri": ""
+    }
   }
 }

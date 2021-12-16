@@ -4,6 +4,7 @@ import * as ec2 from '@aws-cdk/aws-ec2'
 import * as secrets from '@aws-cdk/aws-secretsmanager'
 import * as autoscaling from '@aws-cdk/aws-autoscaling'
 import * as iam from '@aws-cdk/aws-iam'
+import * as ssm from '@aws-cdk/aws-ssm';
 import { CfnAutoScalingGroup } from '@aws-cdk/aws-autoscaling'
 
 interface AutoScalingProps {
@@ -20,7 +21,7 @@ interface AutoScalingProps {
   iisAppPoolName: string,
   iisbindingHostName: string,
   sslCertHostname: string,
-  cloudWatchAgentConfigParameterName: string,
+  cloudWatchAgentConfigPath: string,
   fileSystemDnsName: string,
   s3BuildOutputMsiUri:string,
 }
@@ -118,6 +119,21 @@ export class WindowsAutoScalingStack extends cdk.Stack {
 
     const autoScalingGroupCfn = <CfnAutoScalingGroup> this.asg.node.tryFindChild('ASG');
 
+    // Store CloudWatchConfig in ParameterStore and use it to configure Cloud Watch Agent in EC2 instance
+    let cloudWatchAgentConfigParameterName = '';
+    if(autoScalingProps.cloudWatchAgentConfigPath !== ''){
+      cloudWatchAgentConfigParameterName = 'WindowsCloudWatchAgentConfig';
+      const cloudWatchAgentConfig = fs.readFileSync(autoScalingProps.cloudWatchAgentConfigPath, 'utf8');
+      // console.log(cloudWatchAgentConfig);
+      const cloudWatchAgentConfigParameter = new ssm.StringParameter(scope, 'cloud-watch-agent-config', {
+        parameterName: cloudWatchAgentConfigParameterName,
+        stringValue: cloudWatchAgentConfig,
+        description: 'cloud watch agent config used to configure cloud watch agent in EC2 instance',
+        type: ssm.ParameterType.STRING,
+        tier: ssm.ParameterTier.STANDARD
+      });
+    }
+
     const initData = ec2.CloudFormationInit.fromElements(
       ec2.InitFile.fromAsset("c:\\cfn\\1-setup-website.ps1", "lib/scripts/1-setup-website.ps1"),
       // Install any other softwares needed
@@ -152,7 +168,7 @@ export class WindowsAutoScalingStack extends cdk.Stack {
 
       ec2.InitFile.fromString("c:\\cfn\\9-install-configure-cloudwatch-agent.ps1",
         fs.readFileSync('lib/scripts/9-install-configure-cloudwatch-agent.ps1', 'utf8')
-          .replace(/##replace_with_agent_config_parameter_name##/g, autoScalingProps.cloudWatchAgentConfigParameterName)
+          .replace(/##replace_with_agent_config_parameter_name##/g, cloudWatchAgentConfigParameterName)
       ),
 
       ec2.InitFile.fromString("c:\\cfn\\90-install-website-from-buildoutput.ps1",

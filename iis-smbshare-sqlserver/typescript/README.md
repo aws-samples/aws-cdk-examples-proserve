@@ -55,12 +55,10 @@ Jump Server
 1. Generate Key Pair from AWS console with the name , <key_name> as in below screenshot. This key is used to connect to ec2 hosts. If this key is missing in AWS Account, entire CDK will fail.  
 ![image](/iis-smbshare-sqlserver/typescript/Ec2KeyPair.png)
 
-2. Provide the AWS Account and AWS Region information in bin/cdk-iis-smbshare-fileshare-sqlserver.ts
-
 ## Parameters to customize the deployment
-Edit the following constants in file, /cdk-iis-smbshare-fileshare-sqlserver.ts to customize the deployment.
+Edit the following parameters in file, "iis-smbshare-sqlserver/typescript/cdk.json" to customize the deployment.
 
-| Constant Name  | Description |
+| Parameter Name  | Description |
 | ------------- | ------------- |
 | prefix  | This value is prepended to all the resource ids for easier identification. For example,  "dev" prefix gets appended to all resources to easily identify Development Resources |
 | existingVpcId  | If resources need to be created in existing vpc, edit this constant value to provide vpc Id from AWS Console |
@@ -76,15 +74,22 @@ Edit the following constants in file, /cdk-iis-smbshare-fileshare-sqlserver.ts t
 | iisAppPoolName | IIS App Pool Name to configure for the web application |
 | iisbindingHostName | Web site Host Name. Used to configure the IIS Website Binding Host Name |
 | webSitePort | Web site Port. Used to configure the IIS Webiste Binding port for the Web application |
-| cloudWatchAgentConfigParameterName | Store the cloud watch agent config in the Parameter Store under the name "WindowsCloudWatchAgentConfig". This parameter value will be used to configure cloud watch agent on each ec2 instance. Generate cloudwatch_agent_config.json file locally and upload to parameter store using aws cli as below. <br/>``` aws ssm put-parameter --name "WindowsCloudWatchAgentConfig" --type "String" --value file://C:\\temp\\cloudwatch_agent_config.json --overwrite --tier Intelligent-Tiering --profile <aws_profile> ``` <br/> Sample cloudwatch_agent_config.json is provided under lib folder |
+| cloudWatchAgentConfigPath | Retrieve the cloudwatch config json file from the path and store the config in Parameter Store under the name "WindowsCloudWatchAgentConfig". This parameter value will be used to configure cloud watch agent on each ec2 instance. Sample cloudwatch_agent_config.json is provided under lib folder. If the value of the parameter is empty string, then CloudWatchAgent won't be configured on EC2 instances |
 | s3BuildOutputMsiUri | Set the Code pipeline to generate build output as msi and upload to the S3 bucket. The build output uri should be set below. This msi is used to deploy the code whenever new ec2 spins up by autoscaling group.Use the same msi in Code Deploy to deploy the code whenever new release is getting deployed |
 
 ## Deployment
-1. Bootstrap the cdk using following command 
-```
-cdk bootstrap aws://<aws_account_id>/<aws_region> --profile <aws_profile>
-```
-2. Complete stack can be deployed using following command
-```
-cdk deploy CdkIISSmbShareSqlserverStack --profile <aws_profile>
-```
+1. Make sure the current folder path is "iis-smbshare-sqlserver/typescript"
+
+2. Run following command to bootstrap cdk
+    ```
+    cdk bootstrap aws://<CDK_DEFAULT_ACCOUNT>/<CDK_DEFAULT_REGION> --profile cert
+    ```
+
+3. Provide the AWS Account and AWS Region information by setting value to following environment variables   
+CDK_DEFAULT_ACCOUNT     
+CDK_DEFAULT_REGION
+
+4. Deploy cdk using following command
+    ```
+    cdk deploy CdkIISSmbShareSqlserverStack --profile <aws_profile_name>
+    ```
