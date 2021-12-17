@@ -80,16 +80,4 @@ Edit the following parameters in file, "iis-smbshare-sqlserver/typescript/cdk.js
 ## Deployment
 1. Make sure the current folder path is "iis-smbshare-sqlserver/typescript"
 
-2. Run following command to bootstrap cdk
-    ```
-    cdk bootstrap aws://<CDK_DEFAULT_ACCOUNT>/<CDK_DEFAULT_REGION> --profile cert
-    ```
-
-3. Provide the AWS Account and AWS Region information by setting value to following environment variables   
-CDK_DEFAULT_ACCOUNT     
-CDK_DEFAULT_REGION
-
-4. Deploy cdk using following command
-    ```
-    cdk deploy CdkIISSmbShareSqlserverStack --profile <aws_profile_name>
-    ```
+2. ./script-deploy.sh <aws_profile>
