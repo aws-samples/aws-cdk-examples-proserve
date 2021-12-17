@@ -77,7 +77,7 @@ export class SQLStack extends cdk.Stack {
     // Following section is needed only when backup needs to restored from S3 Backup
     // Please refer https://aws.amazon.com/premiumsupport/knowledge-center/native-backup-rds-sql-server/ for further reading
     // Create S3 bucket when .bak file gets stored
-    const backupRestoreBucketName = `${sqlStackProps.prefix}-s3-backup-restore`;
+    const backupRestoreBucketName = `${sqlStackProps.prefix}-s3-backup-restore-${this.account}-${this.region}`;
     const s3BackupRestoreBucket = new s3.Bucket(
       scope,
       backupRestoreBucketName,
