@@ -1,0 +1,37 @@
+{
+  "name": "cdk-windows-ad-fileshare-sqlserver",
+  "version": "0.1.0",
+  "bin": {
+    "cdk-windows-ad-fileshare-sqlserver": "bin/cdk-windows-ad-fileshare-sqlserver.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.132.0",
+    "@aws-cdk/aws-autoscaling": "^1.132.0",
+    "@aws-cdk/aws-directoryservice": "^1.132.0",
+    "@aws-cdk/aws-ec2": "^1.132.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "^1.132.0",
+    "@aws-cdk/aws-fsx": "^1.132.0",
+    "@aws-cdk/aws-iam": "^1.132.0",
+    "@aws-cdk/aws-rds": "^1.133.0",
+    "@aws-cdk/aws-secretsmanager": "^1.132.0",
+    "@aws-cdk/core": "^1.132.0",
+    "@aws-cdk/aws-ssm": "^1.132.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "16.11.9",
+    "aws-cdk": "1.132.0",
+    "jest": "^27.3.1",
+    "source-map-support": "^0.5.20",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
+    "typescript": "~4.5.2"
+  },
+  "dependencies": {
+    
+  }
+}

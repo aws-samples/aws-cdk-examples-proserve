@@ -1,0 +1,1575 @@
+
+Resources:
+  devcreatevpcA25F5D72:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: dev-create-vpc
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/Resource
+  devcreatevpcPublicSubnet1SubnetFB3BE94F:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      AvailabilityZone: us-east-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/Subnet
+  devcreatevpcPublicSubnet1RouteTableC48CFF96:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/RouteTable
+  devcreatevpcPublicSubnet1RouteTableAssociation89D05C5B:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPublicSubnet1RouteTableC48CFF96
+      SubnetId:
+        Ref: devcreatevpcPublicSubnet1SubnetFB3BE94F
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/RouteTableAssociation
+  devcreatevpcPublicSubnet1DefaultRouteA161B02F:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPublicSubnet1RouteTableC48CFF96
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: devcreatevpcIGW58F2B25C
+    DependsOn:
+      - devcreatevpcVPCGW0A57B1A9
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/DefaultRoute
+  devcreatevpcPublicSubnet1EIP9EAD354C:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/EIP
+  devcreatevpcPublicSubnet1NATGateway69DBAEDB:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: devcreatevpcPublicSubnet1SubnetFB3BE94F
+      AllocationId:
+        Fn::GetAtt:
+          - devcreatevpcPublicSubnet1EIP9EAD354C
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet1/NATGateway
+  devcreatevpcPublicSubnet2SubnetE4A1DBBB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/Subnet
+  devcreatevpcPublicSubnet2RouteTableD117C4CC:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/RouteTable
+  devcreatevpcPublicSubnet2RouteTableAssociation39541186:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPublicSubnet2RouteTableD117C4CC
+      SubnetId:
+        Ref: devcreatevpcPublicSubnet2SubnetE4A1DBBB
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/RouteTableAssociation
+  devcreatevpcPublicSubnet2DefaultRouteF8B71DD6:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPublicSubnet2RouteTableD117C4CC
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: devcreatevpcIGW58F2B25C
+    DependsOn:
+      - devcreatevpcVPCGW0A57B1A9
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/DefaultRoute
+  devcreatevpcPublicSubnet2EIP6BBAC53B:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/EIP
+  devcreatevpcPublicSubnet2NATGatewayC3089085:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: devcreatevpcPublicSubnet2SubnetE4A1DBBB
+      AllocationId:
+        Fn::GetAtt:
+          - devcreatevpcPublicSubnet2EIP6BBAC53B
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PublicSubnet2/NATGateway
+  devcreatevpcPrivateSubnet1Subnet6BB32E33:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      AvailabilityZone: us-east-1a
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1/Subnet
+  devcreatevpcPrivateSubnet1RouteTableAC2A2E16:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1/RouteTable
+  devcreatevpcPrivateSubnet1RouteTableAssociationEBDEB89B:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPrivateSubnet1RouteTableAC2A2E16
+      SubnetId:
+        Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1/RouteTableAssociation
+  devcreatevpcPrivateSubnet1DefaultRouteE12F009A:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPrivateSubnet1RouteTableAC2A2E16
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: devcreatevpcPublicSubnet1NATGateway69DBAEDB
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet1/DefaultRoute
+  devcreatevpcPrivateSubnet2Subnet4DBB1117:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2/Subnet
+  devcreatevpcPrivateSubnet2RouteTable0103D6B3:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      Tags:
+        - Key: Name
+          Value: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2/RouteTable
+  devcreatevpcPrivateSubnet2RouteTableAssociationA7CB46EB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPrivateSubnet2RouteTable0103D6B3
+      SubnetId:
+        Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2/RouteTableAssociation
+  devcreatevpcPrivateSubnet2DefaultRoute93D66CEE:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: devcreatevpcPrivateSubnet2RouteTable0103D6B3
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: devcreatevpcPublicSubnet2NATGatewayC3089085
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/PrivateSubnet2/DefaultRoute
+  devcreatevpcIGW58F2B25C:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: dev-create-vpc
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/IGW
+  devcreatevpcVPCGW0A57B1A9:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+      InternetGatewayId:
+        Ref: devcreatevpcIGW58F2B25C
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-create-vpc/VPCGW
+  devbastioninstancerole9C598D49:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ssm.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSSMManagedInstanceCore
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/SecretsManagerReadWrite
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-bastion-instance-role/Resource
+  devbastioninstancesg667F2357:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkIISSmbShareSqlserverStack/dev-bastion-instance-sg
+      GroupName: dev-bastion-instance-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-bastion-instance-sg/Resource
+  devbastioninstanceInstanceProfileFADEAEF2:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: devbastioninstancerole9C598D49
+    DependsOn:
+      - devsqlinstanceRDSDirectoryServiceRole1FDCA758
+      - devsqlinstance6A45A197
+      - devsqlinstanceSubnetGroup6961BDF7
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-bastion-instance/InstanceProfile
+  devbastioninstance46D985E7:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: us-east-1a
+      IamInstanceProfile:
+        Ref: devbastioninstanceInstanceProfileFADEAEF2
+      ImageId:
+        Ref: SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter
+      InstanceType: t2.micro
+      KeyName: example
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - devbastioninstancesg667F2357
+            - GroupId
+      SubnetId:
+        Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+      Tags:
+        - Key: Bastion
+          Value: Patch_EverySunday_10AM_CST
+        - Key: Name
+          Value: dev-bastion-instance
+      UserData:
+        Fn::Base64: "#!/bin/bash"
+    DependsOn:
+      - devbastioninstancerole9C598D49
+      - devsqlinstanceRDSDirectoryServiceRole1FDCA758
+      - devsqlinstance6A45A197
+      - devsqlinstanceSubnetGroup6961BDF7
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-bastion-instance/Resource
+  examplecorpcomwebpassword10F798CF:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: example.corp.com-web-user-password
+      GenerateSecretString:
+        GenerateStringKey: password
+        SecretStringTemplate: '{"Domain":"example.corp.com","UserID":"web-user"}'
+      Name: example.corp.com-web-password
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/example.corp.com-web-password/Resource
+  examplecorpcommadsecret43BA865E:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: example.corp.com-managed-ad-Admin-password
+      GenerateSecretString:
+        GenerateStringKey: password
+        SecretStringTemplate: '{"Domain":"example.corp.com","UserID":"Admin"}'
+      Name: example.corp.com-managed-ad-Admin-password
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/example.corp.com-mad-secret/Resource
+  devad:
+    Type: AWS::DirectoryService::MicrosoftAD
+    Properties:
+      Name: example.corp.com
+      Password:
+        Fn::Join:
+          - ""
+          - - "{{resolve:secretsmanager:"
+            - Ref: examplecorpcommadsecret43BA865E
+            - :SecretString:password::}}
+      VpcSettings:
+        SubnetIds:
+          - Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+          - Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+        VpcId:
+          Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-ad
+  dhcpOptions:
+    Type: AWS::EC2::DHCPOptions
+    Properties:
+      DomainName: example.corp.com
+      DomainNameServers:
+        Fn::GetAtt:
+          - devad
+          - DnsIpAddresses
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dhcpOptions
+  dhcpOptionsAssoc:
+    Type: AWS::EC2::VPCDHCPOptionsAssociation
+    Properties:
+      DhcpOptionsId:
+        Ref: dhcpOptions
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dhcpOptionsAssoc
+  devfilesharesg42D423AE:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkIISSmbShareSqlserverStack/dev-fileshare-sg
+      GroupName: dev-fileshare-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp:
+            Fn::GetAtt:
+              - devcreatevpcA25F5D72
+              - CidrBlock
+          Description: Allows WinRM-HTTP access from resources inside VPC
+          FromPort: 5985
+          IpProtocol: tcp
+          ToPort: 5985
+        - CidrIp:
+            Fn::GetAtt:
+              - devcreatevpcA25F5D72
+              - CidrBlock
+          Description: Allows SMB File share access from resources inside VPC
+          FromPort: 445
+          IpProtocol: tcp
+          ToPort: 445
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-fileshare-sg/Resource
+  devfs:
+    Type: AWS::FSx::FileSystem
+    Properties:
+      FileSystemType: WINDOWS
+      SubnetIds:
+        - Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+        - Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - devfilesharesg42D423AE
+            - GroupId
+      StorageCapacity: 32
+      StorageType: SSD
+      Tags:
+        - Key: Name
+          Value: smb-share
+      WindowsConfiguration:
+        ActiveDirectoryId:
+          Ref: devad
+        Aliases:
+          - shared-vol.dev.com
+        DeploymentType: MULTI_AZ_1
+        PreferredSubnetId:
+          Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+        ThroughputCapacity: 8
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-fs
+  devrdssg7692B32F:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkIISSmbShareSqlserverStack/dev-rds-sg
+      GroupName: dev-rds-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-rds-sg/Resource
+  devrdssgfromCdkIISSmbShareSqlserverStackdevbastioninstancesg679D999514334353D99E:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Allow incoming from Bastion host
+      FromPort: 1433
+      GroupId:
+        Fn::GetAtt:
+          - devrdssg7692B32F
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - devbastioninstancesg667F2357
+          - GroupId
+      ToPort: 1433
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-rds-sg/from CdkIISSmbShareSqlserverStackdevbastioninstancesg679D9995:1433
+  devrdssgfromCdkIISSmbShareSqlserverStackdevwindowsinstancessgE5590A6614333AAFBC6E:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Allow incoming from Windows instances
+      FromPort: 1433
+      GroupId:
+        Fn::GetAtt:
+          - devrdssg7692B32F
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - devwindowsinstancessgBEDA49E0
+          - GroupId
+      ToPort: 1433
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-rds-sg/from CdkIISSmbShareSqlserverStackdevwindowsinstancessgE5590A66:1433
+  devsqlservercredentialssecretCD52107B:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Credentials to access SQL Database on RDS
+      GenerateSecretString:
+        ExcludePunctuation: true
+        GenerateStringKey: password
+        IncludeSpace: false
+        SecretStringTemplate: '{"username":"admin"}'
+      Name: dev-db-admin-secret
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-server-credentials-secret/Resource
+  devsqlservercredentialssecretAttachment7EA32423:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId:
+        Ref: devsqlservercredentialssecretCD52107B
+      TargetId:
+        Ref: devsqlinstance6A45A197
+      TargetType: AWS::RDS::DBInstance
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-server-credentials-secret/Attachment/Resource
+  devs3backuprestoreCAF8635D:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: dev-s3-backup-restore
+      Tags:
+        - Key: aws-cdk:auto-delete-objects
+          Value: "true"
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/Resource
+  devs3backuprestorePolicyAAC62879:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: devs3backuprestoreCAF8635D
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+                  - Arn
+            Resource:
+              - Fn::GetAtt:
+                  - devs3backuprestoreCAF8635D
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - devs3backuprestoreCAF8635D
+                        - Arn
+                    - /*
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/Policy/Resource
+  devs3backuprestoreAutoDeleteObjectsCustomResourceB8345BB0:
+    Type: Custom::S3AutoDeleteObjects
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
+          - Arn
+      BucketName:
+        Ref: devs3backuprestoreCAF8635D
+    DependsOn:
+      - devs3backuprestorePolicyAAC62879
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/AutoDeleteObjectsCustomResource/Default
+  CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role
+  CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3Bucket4842F32D
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3VersionKeyD0A0B57A
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3VersionKeyD0A0B57A
+      Timeout: 900
+      MemorySize: 128
+      Handler: __entrypoint__.handler
+      Role:
+        Fn::GetAtt:
+          - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+          - Arn
+      Runtime: nodejs12.x
+      Description:
+        Fn::Join:
+          - ""
+          - - "Lambda function for auto-deleting objects in "
+            - Ref: devs3backuprestoreCAF8635D
+            - " S3 bucket."
+    DependsOn:
+      - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler
+  devsqls3readwriterole3372344F:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: rds.amazonaws.com
+        Version: "2012-10-17"
+      Description: Allows rds to access backup restore bucket
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonS3FullAccess
+      RoleName: dev-sql-s3-readwrite-role
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-s3-readwrite-role/Resource
+  devrdssgsqlbackupoptiongroup792BD1AB:
+    Type: AWS::RDS::OptionGroup
+    Properties:
+      EngineName: sqlserver-ex
+      MajorEngineVersion: "15.00"
+      OptionConfigurations:
+        - OptionName: SQLSERVER_BACKUP_RESTORE
+          OptionSettings:
+            - Name: IAM_ROLE_ARN
+              Value:
+                Fn::GetAtt:
+                  - devsqls3readwriterole3372344F
+                  - Arn
+      OptionGroupDescription: dev-rds-sg-sql-backup-option-group
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-rds-sg-sql-backup-option-group/Resource
+  devsqlinstanceSubnetGroup6961BDF7:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for dev-sql-instance database
+      SubnetIds:
+        - Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+        - Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+    DependsOn:
+      - devad
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-instance/SubnetGroup/Default
+  devsqlinstanceRDSDirectoryServiceRole1FDCA758:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: rds.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonRDSDirectoryServiceAccess
+    DependsOn:
+      - devad
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-instance/RDSDirectoryServiceRole/Resource
+  devsqlinstance6A45A197:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceClass: db.t3.xlarge
+      AllocatedStorage: "100"
+      BackupRetentionPeriod: 7
+      CopyTagsToSnapshot: true
+      DBSubnetGroupName:
+        Ref: devsqlinstanceSubnetGroup6961BDF7
+      DeletionProtection: false
+      Domain:
+        Ref: devad
+      DomainIAMRoleName:
+        Ref: devsqlinstanceRDSDirectoryServiceRole1FDCA758
+      Engine: sqlserver-ex
+      EngineVersion: 15.00.4073.23.v1
+      LicenseModel: license-included
+      MasterUsername:
+        Fn::Join:
+          - ""
+          - - "{{resolve:secretsmanager:"
+            - Ref: devsqlservercredentialssecretCD52107B
+            - :SecretString:username::}}
+      MasterUserPassword:
+        Fn::Join:
+          - ""
+          - - "{{resolve:secretsmanager:"
+            - Ref: devsqlservercredentialssecretCD52107B
+            - :SecretString:password::}}
+      MultiAZ: false
+      OptionGroupName:
+        Ref: devrdssgsqlbackupoptiongroup792BD1AB
+      Port: "1433"
+      PubliclyAccessible: false
+      StorageEncrypted: false
+      StorageType: gp2
+      VPCSecurityGroups:
+        - Fn::GetAtt:
+            - devrdssg7692B32F
+            - GroupId
+    DependsOn:
+      - devad
+    UpdateReplacePolicy: Snapshot
+    DeletionPolicy: Snapshot
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-instance/Resource
+  devalbsg7E4D78DE:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkIISSmbShareSqlserverStack/dev-alb-sg
+      GroupName: dev-alb-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allows HTTP access from outside world
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-alb-sg/Resource
+  devalbA03094B9:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      LoadBalancerAttributes:
+        - Key: deletion_protection.enabled
+          Value: "false"
+      Name: dev
+      Scheme: internet-facing
+      SecurityGroups:
+        - Fn::GetAtt:
+            - devalbsg7E4D78DE
+            - GroupId
+      Subnets:
+        - Ref: devcreatevpcPublicSubnet1SubnetFB3BE94F
+        - Ref: devcreatevpcPublicSubnet2SubnetE4A1DBBB
+      Type: application
+    DependsOn:
+      - devcreatevpcPublicSubnet1DefaultRouteA161B02F
+      - devcreatevpcPublicSubnet2DefaultRouteF8B71DD6
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-alb/Resource
+  devalbdevalblistener31E2C2BA:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn:
+            Ref: devalbdevalblistenerdefaulttargetGroup5E792AA1
+          Type: forward
+      LoadBalancerArn:
+        Ref: devalbA03094B9
+      Port: 80
+      Protocol: HTTP
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-alb/dev-alb-listener/Resource
+  devalbdevalblistenerdefaulttargetGroup5E792AA1:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /index.html
+      HealthCheckPort: "90"
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: "200"
+      Port: 90
+      Protocol: HTTP
+      TargetGroupAttributes:
+        - Key: stickiness.enabled
+          Value: "false"
+      TargetType: instance
+      UnhealthyThresholdCount: 2
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-alb/dev-alb-listener/default-targetGroup/Resource
+  devwindowsinstancerole043D0AD1:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ssm.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSSMManagedInstanceCore
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/SecretsManagerReadWrite
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonS3ReadOnlyAccess
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSSMFullAccess
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/CloudWatchAgentServerPolicy
+      Policies:
+        - PolicyDocument:
+            Statement:
+              - Action:
+                  - cloudformation:DescribeStackResource
+                  - cloudformation:SignalResource
+                Effect: Allow
+                Resource: "*"
+            Version: "2012-10-17"
+          PolicyName: signalCloudFormation
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instance-role/Resource
+  devwindowsinstanceroleDefaultPolicy0217D020:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: cloudformation:SignalResource
+            Effect: Allow
+            Resource:
+              Ref: AWS::StackId
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":s3:::"
+                    - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3BucketC3D45960
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":s3:::"
+                    - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3BucketC3D45960
+                    - /*
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":s3:::"
+                    - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3Bucket33EAB751
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":s3:::"
+                    - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3Bucket33EAB751
+                    - /*
+          - Action:
+              - cloudformation:DescribeStackResource
+              - cloudformation:SignalResource
+            Effect: Allow
+            Resource:
+              Ref: AWS::StackId
+        Version: "2012-10-17"
+      PolicyName: devwindowsinstanceroleDefaultPolicy0217D020
+      Roles:
+        - Ref: devwindowsinstancerole043D0AD1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instance-role/DefaultPolicy/Resource
+  devwindowsinstancessgBEDA49E0:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkIISSmbShareSqlserverStack/dev-windows-instances-sg
+      GroupName: dev-windows-instances-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: devcreatevpcA25F5D72
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instances-sg/Resource
+  devwindowsinstancessgfromCdkIISSmbShareSqlserverStackdevalbsgD24FFE9D0655354AA5BEAE:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Allow incoming connections from Load Balancer
+      FromPort: 0
+      GroupId:
+        Fn::GetAtt:
+          - devwindowsinstancessgBEDA49E0
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - devalbsg7E4D78DE
+          - GroupId
+      ToPort: 65535
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instances-sg/from CdkIISSmbShareSqlserverStackdevalbsgD24FFE9D:0-65535
+  devwindowsinstancessgfromCdkIISSmbShareSqlserverStackdevbastioninstancesg679D9995338996AB012E:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Allow incoming RDP from Bastion host
+      FromPort: 3389
+      GroupId:
+        Fn::GetAtt:
+          - devwindowsinstancessgBEDA49E0
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - devbastioninstancesg667F2357
+          - GroupId
+      ToPort: 3389
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instances-sg/from CdkIISSmbShareSqlserverStackdevbastioninstancesg679D9995:3389
+  devwindowsinstancessgfromCdkIISSmbShareSqlserverStackdevalbsgD24FFE9D903585F804:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: Load balancer to target
+      FromPort: 90
+      GroupId:
+        Fn::GetAtt:
+          - devwindowsinstancessgBEDA49E0
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - devalbsg7E4D78DE
+          - GroupId
+      ToPort: 90
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-windows-instances-sg/from CdkIISSmbShareSqlserverStackdevalbsgD24FFE9D:90
+  devasgInstanceProfile093CFF2C:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: devwindowsinstancerole043D0AD1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-asg/InstanceProfile
+  devasgLaunchConfigA79558E4:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId:
+        Ref: SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter
+      InstanceType: c3.large
+      IamInstanceProfile:
+        Ref: devasgInstanceProfile093CFF2C
+      KeyName: example
+      SecurityGroups:
+        - Fn::GetAtt:
+            - devwindowsinstancessgBEDA49E0
+            - GroupId
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ""
+            - - |-
+                <powershell># fingerprint: ed07e1c4abfbc3d2
+                cfn-init.exe -v --region 
+              - Ref: AWS::Region
+              - " --stack "
+              - Ref: AWS::StackName
+              - |-2
+                 --resource devasgASG76978A8D -c default
+                cfn-signal.exe -e 0 --region 
+              - Ref: AWS::Region
+              - " --stack "
+              - Ref: AWS::StackName
+              - |-2
+                 --resource devasgASG76978A8D
+                type C:\cfn\log\cfn-init.log</powershell>
+    DependsOn:
+      - devwindowsinstanceroleDefaultPolicy0217D020
+      - devwindowsinstancerole043D0AD1
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-asg/LaunchConfig
+  devasgASG76978A8D:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MaxSize: "4"
+      MinSize: "2"
+      AutoScalingGroupName: dev-asg
+      LaunchConfigurationName:
+        Ref: devasgLaunchConfigA79558E4
+      Tags:
+        - Key: Name
+          PropagateAtLaunch: true
+          Value: CdkIISSmbShareSqlserverStack/dev-asg
+      TargetGroupARNs:
+        - Ref: devalbdevalblistenerdefaulttargetGroup5E792AA1
+      VPCZoneIdentifier:
+        - Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+        - Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+    CreationPolicy:
+      ResourceSignal:
+        Count: 2
+        Timeout: PT1H30M
+    UpdatePolicy:
+      AutoScalingScheduledAction:
+        IgnoreUnmodifiedGroupSizeProperties: true
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-asg/ASG
+      AWS::CloudFormation::Init:
+        configSets:
+          default:
+            - config
+        config:
+          files:
+            c:\cfn\1-setup-website.ps1:
+              source:
+                Fn::Join:
+                  - ""
+                  - - https://s3.us-east-1.
+                    - Ref: AWS::URLSuffix
+                    - /
+                    - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3BucketC3D45960
+                    - /
+                    - Fn::Select:
+                        - 0
+                        - Fn::Split:
+                            - "||"
+                            - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3VersionKey3AA7EA94
+                    - Fn::Select:
+                        - 1
+                        - Fn::Split:
+                            - "||"
+                            - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3VersionKey3AA7EA94
+            c:\cfn\2-install-softwares.ps1:
+              source:
+                Fn::Join:
+                  - ""
+                  - - https://s3.us-east-1.
+                    - Ref: AWS::URLSuffix
+                    - /
+                    - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3Bucket33EAB751
+                    - /
+                    - Fn::Select:
+                        - 0
+                        - Fn::Split:
+                            - "||"
+                            - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3VersionKey644FCBA5
+                    - Fn::Select:
+                        - 1
+                        - Fn::Split:
+                            - "||"
+                            - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3VersionKey644FCBA5
+            c:\cfn\3-add-machine-to-domain-map-network-drive.ps1:
+              content:
+                Fn::Join:
+                  - ""
+                  - - |-
+                      Import-Module AWSPowerShell
+
+                      New-NetFirewallRule -DisplayName 'Allow local VPC' -Direction Inbound -LocalAddress 10.0.0.0/8 -LocalPort Any -Action Allow
+                      Install-WindowsFeature -Name Failover-Clustering -IncludeManagementTools
+
+                      #domain join with secret from secret manager
+                      [string]$SecretAD  = "example.corp.com-managed-ad-Admin-password"
+                      $SecretObj = Get-SECSecretValue -SecretId $SecretAD
+                      [PSCustomObject]$Secret = ($SecretObj.SecretString  | ConvertFrom-Json)
+                      $password   = $Secret.Password | ConvertTo-SecureString -asPlainText -Force
+                      $username   = $Secret.UserID + "@" + $Secret.Domain
+                      $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+                      Add-Computer -DomainName $Secret.Domain -Credential $credential
+
+                      # map network drive
+                      New-SmbGlobalMapping -RemotePath "\\
+                    - Fn::GetAtt:
+                        - devfs
+                        - DNSName
+                    - '\share" -Credential $credential -Persistent $true -LocalPath Z:'
+              encoding: plain
+            c:\cfn\6-create-add-AD-user.ps1:
+              content: |-
+                [string]$SecretADUser  = "example.corp.com-web-password"
+                $SecretADUserObj = Get-SECSecretValue -SecretId $SecretADUser
+                [PSCustomObject]$SecretADUser = ($SecretADUserObj.SecretString  | ConvertFrom-Json)
+                $adUserpassword   = $SecretADUser.Password | ConvertTo-SecureString -asPlainText -Force
+
+                [string]$SecretAD  = "example.corp.com-managed-ad-Admin-password"
+                $SecretObj = Get-SECSecretValue -SecretId $SecretAD
+                [PSCustomObject]$Secret = ($SecretObj.SecretString  | ConvertFrom-Json)
+                $password   = $Secret.Password | ConvertTo-SecureString -asPlainText -Force
+                $username   = $Secret.UserID + "@" + $Secret.Domain
+                $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+
+                Import-Module ActiveDirectory
+                [string]$Username = "web-user"
+                try {
+                    # Get-ADUser -Identity $Username
+                    New-ADUser -Credential $credential -Name $Username -GivenName $Username -Surname $Username -SamAccountName $Username -UserPrincipalName $Username -AccountPassword $adUserpassword -Enabled $true -CannotChangePassword $true -PasswordNeverExpires $true
+                    Write-Host "Create User as User not exists"
+                }
+                catch [Microsoft.ActiveDirectory.Management.ADIdentityResolutionException] {
+                    Write-Host "User exists"
+                } 
+                # Add AD user as Local Admin
+                Add-LocalGroupMember -Group "Administrators" -Member $("example.corp.com\" + $Username)
+              encoding: plain
+            c:\cfn\7-import-certificate-from-s3.ps1:
+              content: |-
+                Import-Module AWSPowerShell
+                $bucket = ''
+                if (-not ([string]::IsNullOrEmpty($bucket)))
+                {
+                    $objects = Get-S3Object -BucketName $bucket
+
+                    $localPath = 'c:\Users\Administrator\Downloads' 
+                    $localFilePath = ''
+                    foreach ($object in $objects) { 
+                        $fileName = $object.Key 
+                        foreach($file in $fileName) { 
+                            $localFilePath = Join-Path $localPath $file 
+                            Copy-S3Object -BucketName $bucket -Key $object.Key -LocalFile $localFilePath 
+                        }
+                    }
+
+                    Write-Host $localFilePath
+
+
+                    $Pass = ConvertTo-SecureString -String '' -Force -AsPlainText
+                    $User = "whatever"
+                    $Cred = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $User, $Pass
+                    Import-PfxCertificate -FilePath $localFilePath -CertStoreLocation Cert:\LocalMachine\My -Password $Cred.Password
+                }
+              encoding: plain
+            c:\cfn\8-create-webapp-set-apppool.ps1:
+              content: |-
+                Set-ExecutionPolicy Unrestricted
+                Import-Module WebAdministration    
+
+                $s3CertificateBucket = ""
+                $iisAppPoolName = ""    
+                $iisAppPoolDotNetVersion = "v4.0"    
+                    
+                $iisWebsiteFolderPath = "C:\inetpub\wwwroot\"    
+                $iisWebsiteName = ""    
+                  
+                $thumbprint = Get-ChildItem  -Path Cert:\LocalMachine\MY | Where-Object {$_.Subject -Match "example.com"} | Select-Object FriendlyName, Thumbprint, Subject, NotBefore, NotAfter
+                Write-Host $thumbprint.Thumbprint
+
+                $iisWebsiteBindings = $null
+                if (-not ([string]::IsNullOrEmpty($bucket)))
+                {
+                    $iisWebsiteBindings = @(
+                    @{protocol="https";bindingInformation="*:443:";hostHeader="";SSLFlags=1}   
+                    )
+                }
+                else{
+                    $iisWebsiteBindings = @(
+                   @{protocol="http";bindingInformation="*:90:";hostHeader=""}   
+                )
+                } 
+                    
+                if (!(Test-Path IIS:\AppPools\$iisAppPoolName -pathType container))    
+                {   
+                    Write-Host "App Pool Not exists. Create new App Pool"
+                    New-Item IIS:\AppPools\$iisAppPoolName    
+                    Set-ItemProperty IIS:\AppPools\$iisAppPoolName -name "managedRuntimeVersion" -value $iisAppPoolDotNetVersion    
+                }    
+                    
+                if (!(Test-Path IIS:\Sites\$iisWebsiteName -pathType container))    
+                {
+                    Write-Host "Website Not exists. Create new Website with IIS Binding"
+                    New-Item IIS:\Sites\$iisWebsiteName -bindings $iisWebsiteBindings -physicalPath $iisWebsiteFolderPath    
+                    Set-ItemProperty IIS:\Sites\$iisWebsiteName -name applicationPool -value $iisAppPoolName 
+                    Write-Host "set cerficate for the site if https protocol configured"   
+                    if (-not ([string]::IsNullOrEmpty($bucket))){
+                        Write-Host (Get-WebBinding -Name $iisWebsiteName -Port 443 -Protocol "https")
+                        (Get-WebBinding -Name $iisWebsiteName -Port 443 -Protocol "https").AddSslCertificate($thumbprint.Thumbprint, "My")  
+                    }
+                } 
+
+                Import-Module AWSPowerShell
+
+                [string]$SecretAD  = "example.corp.com-web-password"
+                $SecretObj = Get-SECSecretValue -SecretId $SecretAD
+                [PSCustomObject]$Secret = ($SecretObj.SecretString  | ConvertFrom-Json)
+                $username = $Secret.Domain + '\' + $Secret.UserID
+                Set-ItemProperty IIS:\AppPools\$iisAppPoolName -name processModel.identityType -Value SpecificUser 
+
+                Set-ItemProperty IIS:\AppPools\$iisAppPoolName -name processModel.userName -Value $username
+
+                Set-ItemProperty IIS:\AppPools\$iisAppPoolName -name processModel.password -Value $Secret.Password 
+
+                & {iisreset} 
+              encoding: plain
+            c:\cfn\9-install-configure-cloudwatch-agent.ps1:
+              content: |
+                # Install the CloudWatch Agent
+                $zipfile = "AmazonCloudWatchAgent.zip"
+                $tempDir = Join-Path $env:TEMP "AmazonCloudWatchAgent"
+                Invoke-WebRequest -Uri "https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/AmazonCloudWatchAgent.zip" -OutFile $zipfile
+                Expand-Archive -Path $zipfile -DestinationPath $tempDir -Force
+                cd $tempDir
+                Write-Host "Trying to uninstall any previous version of CloudWatch Agent"
+                .\uninstall.ps1
+
+                Write-Host "install the new version of CloudWatch Agent"
+                .\install.ps1
+
+                cd "${env:ProgramFiles}\Amazon\AmazonCloudWatchAgent"
+                Write-Host "Starting CloudWatch Agent"
+                .\amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -s -c ssm:WindowsCloudWatchAgentConfig
+              encoding: plain
+            c:\cfn\90-install-website-from-buildoutput.ps1:
+              content: |-
+                $bucket = ''
+                if (-not ([string]::IsNullOrEmpty($bucket))){
+                    Set-ExecutionPolicy RemoteSigned
+                    New-Item -Path "c:\temp" -ItemType "directory" -Force
+                    Invoke-WebRequest -Uri bucket -Outfile c:\temp\build-output.msi 
+                    c:\temp\build-output.msi /quiet
+                }
+              encoding: plain
+          commands:
+            1-setup-website:
+              command: powershell.exe -File "c:\cfn\1-setup-website.ps1"
+              waitAfterCompletion: 10
+            2-install-softwares:
+              command: powershell.exe -File "c:\cfn\2-install-softwares.ps1"
+              waitAfterCompletion: 10
+            3-add-machine-to-domain-map-network-drive:
+              command: powershell.exe -File "c:\cfn\3-add-machine-to-domain-map-network-drive.ps1"
+              waitAfterCompletion: 10
+            4-Install-Rsat:
+              command: powershell.exe -Command Install-WindowsFeature RSAT-ADDS
+              waitAfterCompletion: 120
+            5-Restart:
+              command: powershell.exe -Command Restart-Computer -force
+              waitAfterCompletion: forever
+            6-create-add-AD-user.ps1:
+              command: powershell.exe -File "c:\cfn\6-create-add-AD-user.ps1"
+              waitAfterCompletion: 10
+            7-import-certificate-from-s3:
+              command: powershell.exe -File "c:\cfn\7-import-certificate-from-s3.ps1"
+              waitAfterCompletion: 10
+            8-create-webapp-set-apppool:
+              command: powershell.exe -File "c:\cfn\8-create-webapp-set-apppool.ps1"
+              waitAfterCompletion: 10
+            9-install-configure-cloudwatch-agent:
+              command: powershell.exe -File "c:\cfn\9-install-configure-cloudwatch-agent.ps1"
+              waitAfterCompletion: 10
+            90-install-website-from-buildoutput:
+              command: powershell.exe -File "c:\cfn\90-install-website-from-buildoutput.ps1"
+              waitAfterCompletion: 10
+            91-Restart:
+              command: powershell.exe -Command Restart-Computer -force
+              waitAfterCompletion: forever
+            92-Signal:
+              command:
+                Fn::Join:
+                  - ""
+                  - - "cfn-signal.exe -e %ERRORLEVEL% --resource devasgASG76978A8D --stack "
+                    - Ref: AWS::StackId
+                    - " --region us-east-1 --role "
+                    - Ref: devwindowsinstancerole043D0AD1
+              waitAfterCompletion: 5
+      AWS::CloudFormation::Authentication:
+        S3AccessCreds:
+          type: S3
+          roleName:
+            Ref: devwindowsinstancerole043D0AD1
+          buckets:
+            - Ref: AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3BucketC3D45960
+            - Ref: AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3Bucket33EAB751
+  cloudwatchagentconfig592DA3B6:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Value: |-
+        {
+        	"logs": {
+        		"logs_collected": {
+        			"files": {
+        				"collect_list": [
+        					{
+        						"file_path": "C:\\inetpub\\logs\\LogFiles\\W3SVC1\\*.log",
+        						"log_group_name": "iislogs",
+        						"log_stream_name": "{instance_id}"
+        					},
+        					{
+        						"file_path": "C:\\inetpub\\logs\\LogFiles\\W3SVC2\\*.log",
+        						"log_group_name": "iislogs",
+        						"log_stream_name": "{instance_id}"
+        					},
+        					{
+        						"file_path": "C:\\inetpub\\logs\\LogFiles\\W3SVC3\\*.log",
+        						"log_group_name": "iislogs",
+        						"log_stream_name": "{instance_id}"
+        					}
+        				]
+        			},
+        			"windows_events": {
+        				"collect_list": [
+        					{
+        						"event_format": "xml",
+        						"event_levels": [
+        							"VERBOSE",
+        							"INFORMATION",
+        							"WARNING",
+        							"ERROR",
+        							"CRITICAL"
+        						],
+        						"event_name": "Application",
+        						"log_group_name": "eventlog/application",
+        						"log_stream_name": "{instance_id}"
+        					}
+        				]
+        			}
+        		}
+        	},
+        	"metrics": {
+        		"append_dimensions": {
+        			"ImageId": "${aws:ImageId}",
+        			"InstanceId": "${aws:InstanceId}",
+        			"InstanceType": "${aws:InstanceType}"
+        		},
+        		"metrics_collected": {
+        			"Processor": {
+                    "measurement": [
+                      {"name": "% Idle Time", "rename": "CPU_IDLE", "unit": "Percent"},
+                      "% Interrupt Time",
+                      "% User Time",
+                      "% Processor Time"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  "LogicalDisk": {
+                    "measurement": [
+                      {"name": "% Idle Time", "unit": "Percent"},
+                      {"name": "% Disk Read Time", "rename": "DISK_READ"},
+                      "% Disk Write Time",
+                      {"name": "% Free Space", "unit": "Percent"},
+                      {"name": "Free Megabytes", "unit": "Megabytes"}
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  "ASP.NET": {
+                    "measurement": [
+                      "Applications Running",
+        			  "Requests Queued",
+                      "Request Wait Time",
+                      "Worker Process Restarts",
+        			  "Application Restarts",
+        			  "Errors Unhandled During Execution",
+        			  "Requests Not Found",
+        			  "Requests Not Authorized",
+        			  "Requests Succeeded",
+        			  "Requests Timed Out",
+        			  "Requests Total"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  "Memory": {
+                    "metrics_collection_interval": 5,
+                    "measurement": [
+                      {"name": "Available MBytes", "unit": "Megabytes"},
+                      "% Committed Bytes In Use",
+                      "Cache Faults/sec",
+                      "Page Faults/sec",
+                      "Pages/sec",
+                      "Long-Term Average Standby Cache Lifetime (s)"
+                    ]
+                  },
+                  "Network Interface": {
+                    "metrics_collection_interval": 5,
+                    "measurement": [
+                      "Bytes Received/sec",
+                      "Bytes Sent/sec",
+                      "Packets Received/sec",
+                      "Packets Sent/sec"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  "System": {
+                    "measurement": [
+                      "Context Switches/sec",
+                      "System Calls/sec",
+                      "Processor Queue Length"
+                    ]
+                  },
+        			"statsd": {
+        				"metrics_aggregation_interval": 60,
+        				"metrics_collection_interval": 10,
+        				"service_address": ":8125"
+        			}
+        		}
+        	}
+        }
+      AllowedPattern: .*
+      Description: cloud watch agent config used to configure cloud watch agent in EC2 instance
+      Name: WindowsCloudWatchAgentConfig
+      Tier: Standard
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/cloud-watch-agent-config/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/21TyW7bMBD9lt5ppo6BoMd6aRMDaSPYQe5jaqQwlkiBQzo1BP17R6K12O1ptsdZH+eyni/u5dcv3+GTZio93tXKOpT13oM6ih2SDU6hWGfmJfgq+FZLwEGJHp1YW0PeBcXuQN6WU/yoX4USZ0865bdLIvRcJtcmb0RbvkZ1L+u3SrXP35K1SMKh0GofDga7wqO2s8HjKxwKHP2jj1NbpcFrawZwq/zYJq34Df4RPH7CWSROn1gdE28Nz8V6D4idXKyl5628l2i82KMKTvvzo7Oh6nq4cmx5L2DiIqb65mmdvFRtY3RJPfHctH2VcWtyh0SN0FDKemfj4L3sS/ByM82uxPLeuuaj1ohUO1TeujOhO2mFkmO/tHKWbOaXG5HRn9b1k1/vz+SxFLSQ9SqoY9zLRYtiTH9lR2MFhI3AAshrVVhID1Bwb3zlE193WVWM7WZ85tiqi7VMyq7tKU5zP+aC6fVJ/BVczgfrDzExmVbBW1JQcHWuzcY+GgP6GYJR78zjTOfBDbu/hTaCqGx/hWPPhP+Tz8CQxQxaUpPsuN00Yr5YTP9WR3JC5RhTgoEcHefs7MvBWy2KOMaEcQPgNtIIl5KsI4mGwabmBjwc+CwDEyPfB+xm9Y+jh/6HcA0PZmyK8oPuTvMH+Y1H/CCtZy4Yr0uUuyj/Avn8SFdcBAAA
+    Metadata:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/CDKMetadata/Default
+Outputs:
+  devcreatevpcid:
+    Value:
+      Ref: devcreatevpcA25F5D72
+  BastionHostInstanceId:
+    Value:
+      Ref: devbastioninstance46D985E7
+  BastionSecurityGroupId:
+    Value:
+      Fn::GetAtt:
+        - devbastioninstancesg667F2357
+        - GroupId
+  directoryAlias:
+    Value:
+      Fn::GetAtt:
+        - devad
+        - Alias
+  directoryDns:
+    Value:
+      Fn::Join:
+        - ","
+        - Fn::GetAtt:
+            - devad
+            - DnsIpAddresses
+  fsType:
+    Value: WINDOWS
+  fsattrDnsName:
+    Value:
+      Fn::GetAtt:
+        - devfs
+        - DNSName
+  subnetIds:
+    Value:
+      Fn::Join:
+        - ","
+        - - Ref: devcreatevpcPrivateSubnet1Subnet6BB32E33
+          - Ref: devcreatevpcPrivateSubnet2Subnet4DBB1117
+  domainid:
+    Value: devad
+  backuprestorebucketarn:
+    Value:
+      Fn::GetAtt:
+        - devs3backuprestoreCAF8635D
+        - Arn
+  sqlinstanceid:
+    Value:
+      Ref: devsqlinstance6A45A197
+  sqlinstance:
+    Value:
+      Fn::GetAtt:
+        - devsqlinstance6A45A197
+        - Endpoint.Address
+  sqlinstacesecuritygroup:
+    Value:
+      Fn::GetAtt:
+        - devrdssg7692B32F
+        - GroupId
+  LoadBalancerDnsName:
+    Value:
+      Fn::GetAtt:
+        - devalbA03094B9
+        - LoadBalancerName
+Parameters:
+  SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3Bucket4842F32D:
+    Type: String
+    Description: S3 bucket for asset "1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1"
+  AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3VersionKeyD0A0B57A:
+    Type: String
+    Description: S3 key for asset version "1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1"
+  AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1ArtifactHash0128B949:
+    Type: String
+    Description: Artifact hash for asset "1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1"
+  AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3BucketC3D45960:
+    Type: String
+    Description: S3 bucket for asset "988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348"
+  AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348S3VersionKey3AA7EA94:
+    Type: String
+    Description: S3 key for asset version "988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348"
+  AssetParameters988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348ArtifactHash8FDCDB59:
+    Type: String
+    Description: Artifact hash for asset "988215e636478f3d1519e31c678e0954bce4b60aa667ebc3094492da6d968348"
+  AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3Bucket33EAB751:
+    Type: String
+    Description: S3 bucket for asset "d77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462fe"
+  AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feS3VersionKey644FCBA5:
+    Type: String
+    Description: S3 key for asset version "d77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462fe"
+  AssetParametersd77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462feArtifactHash1F71656C:
+    Type: String
+    Description: Artifact hash for asset "d77955f3d2457a2ecb277e45b7f23f8003e83ebf9de0988f1f6701f5df0462fe"
+  SsmParameterValueawsserviceamiwindowslatestWindowsServer2019EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base
+

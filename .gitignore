@@ -1,0 +1,6 @@
+.DS_Store
+node_modules
+cdk.context.json
+**/cdk.out/**
+iis-smbshare-sqlserver/typescript/template.yml
+workspace.code-workspace
