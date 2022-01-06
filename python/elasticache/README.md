@@ -71,6 +71,9 @@ python3 -m venv .venv
 # Activate the virtual environment
 source .venv/bin/activate
 
+# If you are a Windows platform, you would activate the virtualenv like this:
+% .venv\Scripts\activate.bat
+
 # Install dependencies
 pip install -r requirements.txt
 ```
