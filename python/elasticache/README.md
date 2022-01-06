@@ -2,7 +2,7 @@
 
 ## Overview
 A CDK app for deploying AWS ElastiCache cluster and associated resources. Using this CDK app to deploy 
-an AWS ElastiCache cluster with the Replication Group and Cluster mode, with the following features
+an AWS ElastiCache cluster with the Replication Group and Cluster mode. Following are the features
 
 * Replication group with cluster mode disabled or enabled.
 * Log delivery to let you stream [Redis Slowlog][1] to Amazon CloudWatch Logs.
@@ -34,7 +34,7 @@ are expected to retrieve the credentials from AWS SecretsManager first.
     * "kms:Encrypt",
     * "kms:ReEncrypt*",
 
-##Secret
+## Secret
 * Using customized key or the default KMS key already defined for the account and region
 * Stored in AWS Secrets Manager
 
