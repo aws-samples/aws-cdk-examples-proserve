@@ -85,7 +85,8 @@ export class SQLStack extends cdk.Stack {
         bucketName: backupRestoreBucketName,
         versioned: false,
         removalPolicy: RemovalPolicy.DESTROY,
-        autoDeleteObjects: true
+        autoDeleteObjects: true,
+        encryption: s3.BucketEncryption.S3_MANAGED
       }
     );
 
