@@ -531,22 +531,26 @@ Resources:
       TargetType: AWS::RDS::DBInstance
     Metadata:
       aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-sql-server-credentials-secret/Attachment/Resource
-  devs3backuprestoreCAF8635D:
+  devs3backuprestore277257655140useast16EE5BC59:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: dev-s3-backup-restore
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      BucketName: dev-s3-backup-restore-277257655140-us-east-1
       Tags:
         - Key: aws-cdk:auto-delete-objects
           Value: "true"
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Metadata:
-      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/Resource
-  devs3backuprestorePolicyAAC62879:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore-277257655140-us-east-1/Resource
+  devs3backuprestore277257655140useast1Policy0B01C137:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket:
-        Ref: devs3backuprestoreCAF8635D
+        Ref: devs3backuprestore277257655140useast16EE5BC59
       PolicyDocument:
         Statement:
           - Action:
@@ -561,18 +565,18 @@ Resources:
                   - Arn
             Resource:
               - Fn::GetAtt:
-                  - devs3backuprestoreCAF8635D
+                  - devs3backuprestore277257655140useast16EE5BC59
                   - Arn
               - Fn::Join:
                   - ""
                   - - Fn::GetAtt:
-                        - devs3backuprestoreCAF8635D
+                        - devs3backuprestore277257655140useast16EE5BC59
                         - Arn
                     - /*
         Version: "2012-10-17"
     Metadata:
-      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/Policy/Resource
-  devs3backuprestoreAutoDeleteObjectsCustomResourceB8345BB0:
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore-277257655140-us-east-1/Policy/Resource
+  devs3backuprestore277257655140useast1AutoDeleteObjectsCustomResource0BDE0285:
     Type: Custom::S3AutoDeleteObjects
     Properties:
       ServiceToken:
@@ -580,13 +584,13 @@ Resources:
           - CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
           - Arn
       BucketName:
-        Ref: devs3backuprestoreCAF8635D
+        Ref: devs3backuprestore277257655140useast16EE5BC59
     DependsOn:
-      - devs3backuprestorePolicyAAC62879
+      - devs3backuprestore277257655140useast1Policy0B01C137
     UpdateReplacePolicy: Delete
     DeletionPolicy: Delete
     Metadata:
-      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore/AutoDeleteObjectsCustomResource/Default
+      aws:cdk:path: CdkIISSmbShareSqlserverStack/dev-s3-backup-restore-277257655140-us-east-1/AutoDeleteObjectsCustomResource/Default
   CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092:
     Type: AWS::IAM::Role
     Properties:
@@ -632,7 +636,7 @@ Resources:
         Fn::Join:
           - ""
           - - "Lambda function for auto-deleting objects in "
-            - Ref: devs3backuprestoreCAF8635D
+            - Ref: devs3backuprestore277257655140useast16EE5BC59
             - " S3 bucket."
     DependsOn:
       - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
@@ -1023,7 +1027,7 @@ Resources:
           Fn::Join:
             - ""
             - - |-
-                <powershell># fingerprint: ed07e1c4abfbc3d2
+                <powershell># fingerprint: de0d0e58a6afe63a
                 cfn-init.exe -v --region 
               - Ref: AWS::Region
               - " --stack "
@@ -1198,11 +1202,11 @@ Resources:
                 Import-Module WebAdministration    
 
                 $s3CertificateBucket = ""
-                $iisAppPoolName = ""    
+                $iisAppPoolName = "my-web-app"    
                 $iisAppPoolDotNetVersion = "v4.0"    
                     
-                $iisWebsiteFolderPath = "C:\inetpub\wwwroot\"    
-                $iisWebsiteName = ""    
+                $iisWebsiteFolderPath = "C:\inetpub\wwwroot\my-web-app"    
+                $iisWebsiteName = "my-web-app"    
                   
                 $thumbprint = Get-ChildItem  -Path Cert:\LocalMachine\MY | Where-Object {$_.Subject -Match "example.com"} | Select-Object FriendlyName, Thumbprint, Subject, NotBefore, NotAfter
                 Write-Host $thumbprint.Thumbprint
@@ -1211,12 +1215,12 @@ Resources:
                 if (-not ([string]::IsNullOrEmpty($bucket)))
                 {
                     $iisWebsiteBindings = @(
-                    @{protocol="https";bindingInformation="*:443:";hostHeader="";SSLFlags=1}   
+                    @{protocol="https";bindingInformation="*:443:*";hostHeader="*";SSLFlags=1}   
                     )
                 }
                 else{
                     $iisWebsiteBindings = @(
-                   @{protocol="http";bindingInformation="*:90:";hostHeader=""}   
+                   @{protocol="http";bindingInformation="*:90:*";hostHeader="*"}   
                 )
                 } 
                     
@@ -1464,7 +1468,6 @@ Resources:
         		}
         	}
         }
-      AllowedPattern: .*
       Description: cloud watch agent config used to configure cloud watch agent in EC2 instance
       Name: WindowsCloudWatchAgentConfig
       Tier: Standard
@@ -1518,7 +1521,7 @@ Outputs:
   backuprestorebucketarn:
     Value:
       Fn::GetAtt:
-        - devs3backuprestoreCAF8635D
+        - devs3backuprestore277257655140useast16EE5BC59
         - Arn
   sqlinstanceid:
     Value:
