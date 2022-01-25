@@ -12,8 +12,9 @@ When deploying this pattern be sure to adjust the publisher policy to align with
 ### 0. Install dependencies
 
 ```shell
+npm install -g aws-cdk # you maybe skip this step if you already have the CDK CLI installed
 cd typescript/cross-account-eventing # assumes you are in the repository root directory
-npm i
+npm install
 ```
 
 ### 1. Create the Publisher Infrastructure
