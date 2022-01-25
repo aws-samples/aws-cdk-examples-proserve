@@ -30,3 +30,18 @@ cdk deploy --parameters SubscriberAccountId=REPLACE_WITH_SUBSCRIBER_ACCOUNT_ID
 cd ../subscriber # assumes you are still in the publisher directory from step 1
 cdk deploy --parameters PublisherTopicArn=REPLACE_WITH_OUTPUT_VALUE_FROM_STEP_1
 ```
+
+### 3. Test the setup
+
+Utilize the guides below to complete the following steps
+
+1. Login to Account A
+2. Go to your newly created SNS Topic
+3. Create and publish a message
+4. Login to Account B
+5. Go to your newly created SQS Queue
+6. Run the steps to received and view the message
+
+* AWS Developer Guide
+  * [Message publishing](https://docs.aws.amazon.com/sns/latest/dg/sns-publishing.html#sns-publishing-messages) on SNS Topics
+  * [Receiving and deleting a message](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-receive-delete-message.html) on SQS Queues
