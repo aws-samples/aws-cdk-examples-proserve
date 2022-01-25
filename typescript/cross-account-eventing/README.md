@@ -21,6 +21,7 @@ npm install
 
 ```shell
 cd publisher
+# Login to Account A with the AWS CLI
 cdk deploy --parameters SubscriberAccountId=REPLACE_WITH_SUBSCRIBER_ACCOUNT_ID
 # Make note of the output value 'CrossAccountEventingPublisherStack.PublisherTopicArn'
 ```
@@ -29,6 +30,7 @@ cdk deploy --parameters SubscriberAccountId=REPLACE_WITH_SUBSCRIBER_ACCOUNT_ID
 
 ```shell
 cd ../subscriber # assumes you are still in the publisher directory from step 1
+# Login to Account B with the AWS CLI
 cdk deploy --parameters PublisherTopicArn=REPLACE_WITH_OUTPUT_VALUE_FROM_STEP_1
 ```
 
