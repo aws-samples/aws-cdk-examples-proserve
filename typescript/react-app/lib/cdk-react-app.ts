@@ -85,7 +85,7 @@ export class CdkReactApp extends Stack {
       path: '/notes',
     });
 
-  // S3 Static Website
+    // S3 Static Website
     const staticFiles = new Bucket(this, 'frontend-app', {
       autoDeleteObjects: true,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
