@@ -1,0 +1,131 @@
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 18px;
+    margin: 0;
+    font-family: sans-serif;
+    color: #8B8B8F;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    .modal-open {
+        content: " ";
+        background: rgba(0,0,0,.3);
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 2;
+    }
+    aside {
+        background: #1F1F1F;
+        color: #8E8E94;
+        width: 20vw;
+        order: 0;
+        padding: 1em;
+        flex-shrink: 0;
+        h3 {
+            color: #fff;
+            margin: 0;
+            button {
+                float: right;
+                border: 0;
+                padding: .3em .5em;
+                border-radius: .2em;
+                appearance: none;
+                background: #fff;
+                cursor: pointer;
+            }
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 1em 0 0 0;
+            li + li {
+                margin-top: .5em;
+            }
+            li {
+                font-size: .9em;
+                cursor: pointer;
+                padding: .5em 1em;
+                border-radius: .3em;
+                transition: .2s all;
+                display: flex;
+                flex-direction: column;
+                gap: .2em;
+                .date {
+                    font-style: italic;
+                }
+                .subject {
+                    font-weight: bold;
+                }
+                &:hover {
+                    background: rgba(255,255,255,.1);
+                }
+                &.active {
+                    color: #fff;
+                    background: rgba(255,255,255,.3);
+                }
+            }
+        }
+    }
+    main {
+        order: 1;
+        padding: 2em;
+        flex-grow: 1;
+        .note-title {
+            color: #000;
+        }
+        .note-body {
+            margin-top: 2em;
+        }
+    }
+    form {
+        width: 30vw;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        justify-self: center;
+        gap: 1em;
+        padding: 2.5em 1.5em 1.5em;
+        margin: 20vh auto 0;
+        position: relative;
+        border-radius: .3em;
+        .close-btn {
+            position: absolute;
+            font-weight: bold;
+            cursor: pointer;
+            right: .5em;
+            font-size: 1.1em;
+            top: .3em;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: .5em;
+            border: rgb(142, 142, 142) 1px solid;
+        }
+        textarea {
+            font-family: sans-serif;
+            height: 200px
+        }
+        input[type="submit"] {
+            align-self: flex-end;
+            font-size: .9em;
+            border: 0;
+            background-color: #5340FF;
+            color: #fff;
+            padding: .2em .5em;
+            border-radius: .2em;
+            cursor: pointer;
+        }
+    }
+}
