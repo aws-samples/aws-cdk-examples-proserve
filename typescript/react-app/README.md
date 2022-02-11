@@ -14,6 +14,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## How it works
 
+![Diagram of the architecture](./react-cdk-diagram.png)
+
 The files in the `/lib/web` are compiled into a bundle by [Vite](https://vitejs.dev/) which is a lightweight module bundling alternative to Webpack.
 
 The built files are then uploaded to an S3 bucket and a Cloudfront distribution is created that has an Origin Access Identity to the S3 bucket.
