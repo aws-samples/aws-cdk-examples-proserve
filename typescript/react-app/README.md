@@ -34,3 +34,7 @@ Finally, a `config.json` file is created with the URL of the API gateway and upl
 First, bootstrap your environment.
 
 Then run `npm run deploy` and it will build and deploy everything for you.
+
+## Cleanup
+
+To remove all the resources, simply run `cdk destroy` and it will take care of it for you.
