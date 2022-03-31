@@ -1,0 +1,64 @@
+openapi: "3.0.1"
+info:
+  version: 0.1.0
+  title: API Gateway Swagger Integration
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+paths:
+  /items/{itemId}:
+    get:
+      x-amazon-apigateway-request-validator: params-only
+      summary: get an item
+      operationId: getItem
+      tags:
+        - items
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          description: The id of the item to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/item"
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetItem.Arn}/invocations
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "never"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+components:
+  schemas:
+    item:
+      required:
+        - itemId
+        - itemName
+      properties:
+        itemId:
+          type: integer
+          example: 101885
+        itemName:
+          type: string
+          example: john.doe
+    items:
+      type: array
+      items:
+        $ref: "#/components/schemas/item"
