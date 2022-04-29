@@ -25,6 +25,8 @@ import { join } from 'path';
 import { copySync } from 'fs-extra';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Appconfig } from "./appconfig/appconfig";
+// import { aws_appconfig as appconfig } from 'aws-cdk-lib';
 export class CdkReactApp extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -187,5 +189,8 @@ export class CdkReactApp extends Stack {
     new CfnOutput(this, 'DistributionDomain', {
       value: distribution.distributionDomainName,
     });
+
+    // AppConfig definition
+    const appConfig = new Appconfig(this, 'AppConfig');
   }
 }
