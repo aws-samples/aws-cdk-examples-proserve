@@ -31,6 +31,19 @@ export class CdkReactApp extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    // AppConfig and AppSync Api definition
+    const appConfig = new CdkAppConfig(this, 'AppConfig', props);
+    const appSyncApiKey = appConfig.appSyncApi.apiKey;
+    const appSyncGraphqlUrl = appConfig.appSyncApi.graphqlUrl;
+
+    new CfnOutput(this, 'AppSyncApiKey', {
+      value: appSyncApiKey!
+    });
+
+    new CfnOutput(this, 'AppSyncGraphqlUrl', {
+      value: appSyncGraphqlUrl!
+    });
+
     // DynamoDB Table
     const table = new Table(this, 'NotesTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
@@ -188,19 +201,6 @@ export class CdkReactApp extends Stack {
 
     new CfnOutput(this, 'DistributionDomain', {
       value: distribution.distributionDomainName,
-    });
-
-    // AppConfig definition
-    const appConfig = new CdkAppConfig(this, 'AppConfig', props);
-    const appSyncApiKey = appConfig.appSyncApi.apiKey;
-    const appSyncGraphqlUrl = appConfig.appSyncApi.graphqlUrl;
-
-    new CfnOutput(this, 'AppSyncApiKey', {
-      value: appSyncApiKey!
-    });
-
-    new CfnOutput(this, 'AppSyncGraphqlUrl', {
-      value: appSyncGraphqlUrl!
     });
   }
 }
