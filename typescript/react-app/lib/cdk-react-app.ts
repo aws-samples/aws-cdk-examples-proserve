@@ -25,8 +25,8 @@ import { join } from 'path';
 import { copySync } from 'fs-extra';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { Appconfig } from "./appconfig/appconfig";
-// import { aws_appconfig as appconfig } from 'aws-cdk-lib';
+import { CdkAppConfig } from "./appconfig/cdk-appconfig";
+
 export class CdkReactApp extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -191,6 +191,16 @@ export class CdkReactApp extends Stack {
     });
 
     // AppConfig definition
-    const appConfig = new Appconfig(this, 'AppConfig');
+    const appConfig = new CdkAppConfig(this, 'AppConfig', props);
+    const appSyncApiKey = appConfig.appSyncApi.apiKey;
+    const appSyncGraphqlUrl = appConfig.appSyncApi.graphqlUrl;
+
+    new CfnOutput(this, 'AppSyncApiKey', {
+      value: appSyncApiKey!
+    });
+
+    new CfnOutput(this, 'AppSyncGraphqlUrl', {
+      value: appSyncGraphqlUrl!
+    });
   }
 }
