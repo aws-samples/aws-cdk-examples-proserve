@@ -1,0 +1,9 @@
+# graphql/schema.graphql
+type AppConfigData {
+    boolEnableSomeFeature: Boolean,
+    intLimitResults: Int
+}
+
+type Query {
+    getAppConfigData: AppConfigData
+}

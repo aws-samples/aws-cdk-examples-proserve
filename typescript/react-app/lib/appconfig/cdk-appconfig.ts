@@ -1,9 +1,27 @@
 import { Construct } from 'constructs';
-import { aws_appconfig as appconfig, CfnOutput, StackProps } from "aws-cdk-lib";
+import {
+  aws_appconfig as appconfig,
+  aws_iam as iam,
+  CfnOutput,
+  Duration,
+  Expiration,
+  Stack,
+  StackProps
+} from "aws-cdk-lib";
 import featureFlags from './featureFlags.json';
+import * as appsync from "@aws-cdk/aws-appsync-alpha";
+import { FieldLogLevel } from "@aws-cdk/aws-appsync-alpha";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Architecture, LayerVersion, Runtime } from "aws-cdk-lib/aws-lambda";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 
+export interface AppConfigProps {
+  downstream: appsync.IGraphqlApi
+}
 
-export class Appconfig extends Construct {
+export class CdkAppConfig extends Construct {
+  public readonly appSyncApi: appsync.GraphqlApi;
+
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id);
 
@@ -79,5 +97,64 @@ export class Appconfig extends Construct {
     appconfigDeployment.node.addDependency(appConfigDevelopmentEnvironment);
     appconfigDeployment.node.addDependency(appconfigDeploymentStrategy);
     appconfigDeployment.node.addDependency(appconfigHostedConfigurationVersion);
+
+    this.appSyncApi = new appsync.GraphqlApi(this, 'FeatureFlagApi', {
+      name: 'feature-flags-api',
+      schema: appsync.Schema.fromAsset(`${__dirname}/schema.graphql`),
+      authorizationConfig: {
+        defaultAuthorization: {
+          authorizationType: appsync.AuthorizationType.API_KEY,
+          apiKeyConfig: {
+            expires: Expiration.after(Duration.days(365))
+          }
+        }
+      },
+      xrayEnabled: true,
+      logConfig: {
+        fieldLogLevel: FieldLogLevel.ALL,
+        excludeVerboseContent: false,
+        role: new iam.Role(this, 'AppSyncApiCloudWatchRole', {
+          roleName: 'AppSyncApiCloudWatchRole',
+          assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
+          managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSAppSyncPushToCloudWatchLogs')]
+        })
+      }
+    });
+
+    const appConfigLambda = new NodejsFunction(this, 'AppConfigHandler', {
+      architecture: Architecture.ARM_64,
+      entry: `${__dirname}/lambda-resolver.ts`,
+      logRetention: RetentionDays.ONE_WEEK,
+      runtime: Runtime.NODEJS_14_X,
+      environment: {
+        AWS_APPCONFIG_EXTENSION_HTTP_PORT: '2772',
+        AWS_APPCONFIG_EXTENSION_POLL_INTERVAL_SECONDS: '45',
+        AWS_APPCONFIG_EXTENSION_POLL_TIMEOUT_MILLIS: '3000',
+        AWS_APPCONFIG_APPLICATION_ID: appconfigApplication.ref,
+        AWS_APPCONFIG_ENVIRONMENT_ID: appConfigDevelopmentEnvironment.ref,
+        AWS_APPCONFIG_CONFIGURATION_ID: appconfigConfigurationProfile.ref,
+        AWS_APPCONFIG_EXTENSION_PREFETCH_LIST: '',
+      },
+      layers: [
+        LayerVersion.fromLayerVersionArn(this, 'AppConfigLambdaExtension', 'arn:aws:lambda:us-east-1:027255383542:layer:AWS-AppConfig-Extension-Arm64:2')
+      ]
+    });
+
+    appConfigLambda.addToRolePolicy(
+      new iam.PolicyStatement({
+        resources: [
+          `arn:aws:appconfig:${Stack.of(this).region}:${Stack.of(this).account}:application/${appconfigApplication.ref}*`
+        ],
+        actions: ['appconfig:GetConfiguration', 'appconfig:StartConfigurationSession', 'appconfig:GetLatestConfiguration'],
+        effect: iam.Effect.ALLOW
+      })
+    );
+
+    // Set the new Lambda function as a data source for the AppSync API
+    const lambdaDataSource = this.appSyncApi.addLambdaDataSource('lambdaDatasource', appConfigLambda);
+    lambdaDataSource.createResolver({
+      typeName: 'Query',
+      fieldName: 'getAppConfigData'
+    });
   }
 }
