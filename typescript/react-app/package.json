@@ -32,7 +32,7 @@
     "@aws-cdk/aws-apigatewayv2-alpha": "^2.10.0-alpha.0",
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.10.0-alpha.0",
     "@aws-sdk/client-dynamodb": "^3.49.0",
-    "aws-cdk-lib": "2.10.0",
+    "aws-cdk-lib": "2.63.0",
     "constructs": "^10.0.0",
     "dynamodb-onetable": "^2.3.1",
     "react": "^17.0.2",
